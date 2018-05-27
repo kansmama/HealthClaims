@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Claim Client</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container" style="width: 650px;">
+      <div class="row">
+        <div class="col-lg-12 text-center" >
+          <h1 >Claim Client</h1>
+          <!--hr/-->
+          <br/>
+          <div id="content">
+
+            <!--hr/-->
+            <!--form role="form" id="form1">
+              <div class="form-group" style="display:inline;">
+                <div class="input-group">
+                  <input class="form-control input-lg" name="displayHospital">
+                  </input>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary btn-lg">Hospital Number</button>
+                  </span>
+                </div>
+              </div>
+                 <br/>
+           		 <h4 id="displayHospital">--</h4>
+            </form>
+            <br/>
+            <hr/-->
+            <form role="form" id="form2">
+              <div class="form-group" style="display:inline;">
+                <div class="input-group">
+                  <input class="form-control input-lg" name="displayClaim">
+                  </input>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary btn-lg">Claim Inquiry</button>
+                  </span>
+                </div>
+              </div>
+            <h4 id="displayClaimPatient">Patient Name: --</h4>
+            <h4 id="displayClaimHospDate">Hospitalization Date: --</h4>
+            <h4 id="displayClaimHospital">Hospital Name: --</h4>
+            <h4 id="displayClaimHospReason">Hospitalization Reason: --</h4>
+            <h4 id="displayClaimPolicyNumber">Policy Number: --</h4>
+            <h4 id="displayClaimInsuranceCo">Insurance Company: --</h4>
+            </form>
+            <form role="form" id="form3">
+              <div class="form-group" style="display:inline;">
+                <div class="input-group">
+                  <label for='inputPatient'><h4>Patient Name: </h4></label><br/>
+                  <input id="inputPatient">
+                  </input><br/>
+                  <label for='inputHospDate'><h4>HospitalizationDate: </h4></label><br/>
+                  <input id="inputHospDate">
+                  </input><br/>
+                  <label for='inputHospReason'><h4>Hospitalization Reason: </h4></label><br/>
+                  <input id="inputHospReason">
+                  </input><br/>
+                  <label for='inputPolicyNumber'><h4>Policy Number: </h4></label><br/>
+                  <input id="inputPolicyNumber">
+                  </input><br/>
+                  <label for='inputInsuranceCo'><h4>Insurance Company: </h4></label><br/>
+                  <input id="inputInsuranceCo">
+                  </input><br/><br/>
+
+                    <input type="submit" class="btn btn-primary btn-lg" value="Notify Claim"></input>
+
+                </div>
+              </div>
+            <h4 id="submittedClaimID">Claim ID Generated: --</h4>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script>
+   // import React from 'react'
+	//import ReactDOM from 'react-dom'
+
+      // Initialize Web3
+      window.addEventListener('load', function() {
+
+	    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+	    //console.log(web3);
+	    //alert('load dunction');
+	    if (typeof web3 !== 'undefined') {
+	      // Use Mist/MetaMask's provider
+	    //  alert('defined');
+	     // alert(web3);
+	     // alert(web3.currentProvider);
+	      web3js = new Web3(web3.currentProvider);
+	      	          // Set Account
+		  		      //web3.eth.defaultAccount = web3.eth.accounts[0];
+		  		      web3.eth.getAccounts((error, accounts) => startApp(web3))
+		  		      //'0x50c6337f3856490fb5c2709760234e1cc4980632';
+		  		      //alert ('account assigned');
+		  		     // alert (web3.eth.defaultAccount);
+
+
+	    } else {
+	    	alert ('no Metamask');
+	      console.log('No web3? You should consider trying MetaMask!');
+	      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+	     // web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	    }
+
+
+	    // Now you can start your app & access web3 freely:
+	    //startApp()
+
+	})
+function startApp (web3) {
+    //alert('startApp');
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+   // alert('account in startApp');
+    //alert (web3.eth.defaultAccount);
+     var contractAbi = [{"constant":true,"inputs":[],"name":"hospitalizationDate","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"hospitalName","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"hospitalCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"claimList","outputs":[{"name":"hospitalAddress","type":"address"},{"name":"hospitalName","type":"string"},{"name":"patientName","type":"string"},{"name":"hospitalizationDate","type":"string"},{"name":"hospitalizationReason","type":"string"},{"name":"policyNumber","type":"string"},{"name":"insuranceCompany","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"hospitalNumber","type":"uint256"},{"name":"ptntName","type":"string"},{"name":"hospDate","type":"string"},{"name":"hospReason","type":"string"},{"name":"polNumber","type":"string"},{"name":"insCompany","type":"string"}],"name":"notifyClaim","outputs":[{"name":"","type":"uint256"},{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"ownerReg","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"hospAddress","type":"address"},{"name":"hospName","type":"string"}],"name":"registerHospital","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"hospitalizationReason","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"registerOwner","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"claimCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"patientName","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"policyNumber","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"hospitalList","outputs":[{"name":"hospitalAddress","type":"address"},{"name":"hospitalName","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"insuranceCompany","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"claimNum","type":"uint256"}],"name":"displayClaim","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"hospNum","type":"uint256"}],"name":"displayHospital","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"claimHospital","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"claimNo","type":"uint256"},{"indexed":false,"name":"message","type":"string"}],"name":"claimNotification","type":"event"}];
+     // Add Your Contract ABI here!!!
+				  		      // Set Contract Address
+				  		      var contractAddress = '0xabfc3f7df2097e6f5fd8338297bab50cbccf675a'; // Add Your Contract address here!!!
+				  		      // Set the Contract
+			  		      //var contract = web3.eth.contract(contractAbi).at(contractAddress);
+			  		      //web3.eth.getCode((error, accounts) => contractInquiry(contract))
+			  		      web3.eth.getCode(contractAddress, function(err, code) {
+			  		      		//console.log(code);
+			  		      		contractInquiry(contractAbi,contractAddress,code)
+			  		      		})
+			  		     // alert('contract done, let us try hospital name');
+						  //alert(contract.displayHospital.hospitalName);
+						  //alert('owner Reg');
+			  		    // alert(contract.ownerReg);
+			  		    //  alert('end of startApp');
+}
+
+function contractInquiry (contractAbi,contractAddress,code) {
+    //alert('contractInquiry');
+   // alert (code);
+   // console.log(code);
+    var contract = web3.eth.contract(contractAbi).at(contractAddress);
+    			  		      //alert('inside contractInquiry, let us try ClaimList');
+							  //alert(contract.displayHospital.hospitalName);
+							  //contract.claimList(function(err, res){
+							  //  alert(res)
+							   // })
+							 // alert('inside contractInquiry, let us try owner Reg');
+			  		    // alert(contract.ownerReg);
+			  		    	/*contract.ownerReg(function(err, res){
+								alert(res)
+							    })*/
+						      $('#form1').on('submit', function(event) {
+						        event.preventDefault();
+						        alert ('Display Hospital');
+						        contract.hospitalList(0, function(err, res){
+														//alert(res)
+														$('#displayHospital').html(res[1]);
+							    				})
+							    })
+						// let us try claimList
+						      $('#form2').on('submit', function(event) {
+						        event.preventDefault();
+						        alert ('Display Claim');
+						        contract.claimList($('input').val(), function(err, res){
+
+						        						//alert(web3.toAscii(res[6]));
+														//alert(res[6]);
+														//alert (a);
+														$('#displayClaimPatient').html("Patient Name: "+res[2]);
+														$('#displayClaimHospDate').html("Hospitalization Date: "+res[3]);
+														$('#displayClaimHospital').html("Hospital Name: "+res[1]);
+														$('#displayClaimHospReason').html("Hospitalization Reason: "+res[4]);
+														$('#displayClaimPolicyNumber').html("Policy Number: "+res[5]);
+														$('#displayClaimInsuranceCo').html("Insurance Company: "+res[6]);
+							    					})
+							    })
+			  		    /*	contract.claimList(0, function(err, res){
+								alert(res)
+							    })
+						      $('form1').on('submit', function(event) {
+						        event.preventDefault();
+						        alert ('submitted');
+						        contract.claimList($('input').val(), function(err, res){
+														alert(res)
+							    	})*/
+						      $('#form3').on('submit', function(event) {
+						        event.preventDefault();
+						        alert ('Notify Claim');
+						        contract.notifyClaim(0,$('#inputPatient').val(), $('#inputHospDate').val(),$('#inputHospReason').val(),$('#inputPolicyNumber').val(),$('#inputInsuranceCo').val(),function(err, res){
+														//alert("0: "+res[0]+"1: "+res[1]+"2: "+res[2]+"3: "+res[3]+"4: "+res[4]);
+														console.log(res);
+														//console.log(res[0]);
+														//console.log(res.c[0]);
+														//console.log(res.c[1]);
+														//$('#displayHospital').html(res[1]);
+							    				})
+							    var notificationEvent = contract.claimNotification();
+							    notificationEvent.watch(function(error, result){
+								            if (!error)
+								                {
+								                    //$("#loader").hide();
+								                    alert("event success");
+								                    $("#submittedClaimID").html("Generated Claim ID: " + result.args.claimNo + " returned the message: " + result.args.message);
+								                    console.log(result);
+								                } else {
+								                    //$("#loader").hide();
+								                    console.log(error);
+								                }
+        								});
+							    })
+
+    					}
+
+    </script>
+  </body>
+</html>
